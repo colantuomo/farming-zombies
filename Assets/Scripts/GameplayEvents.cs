@@ -27,13 +27,32 @@ public class GameplayEvents : MonoBehaviour
         OnAddingGroundItem?.Invoke(item);
     }
 
+    public event Action<Transform> OnEditingItem;
+    public void EditingItem(Transform item)
+    {
+        OnEditingItem?.Invoke(item);
+    }
+
     public event Action OnCancelAction;
     public void CancelAction(InputAction.CallbackContext context)
     {
-        if(context.performed)
+        if (context.performed)
         {
             print("cancel?");
             OnCancelAction?.Invoke();
         }
+    }
+
+    public event Action<string> OnChooseAnItemShop;
+    public void ChooseAnItemShop(string item)
+    {
+        print($"selected an item? {item}");
+        OnChooseAnItemShop?.Invoke(item);
+    }
+
+    public event Action OnRotateItem;
+    public void RotateItem()
+    {
+        OnRotateItem?.Invoke();
     }
 }

@@ -31,8 +31,7 @@ public class NavmeshController : MonoBehaviour
     {
         Vector2 pos = Input.mousePosition;
         Ray ray = _virtualCam.ScreenPointToRay(new Vector3(pos.x, pos.y, 0.0f));
-        RaycastHit hit;
-        Physics.Raycast(ray, out hit);
+        Physics.Raycast(ray, out RaycastHit hit);
         return hit.point;
     }
 

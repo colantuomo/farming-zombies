@@ -12,11 +12,12 @@ public class CamerasManager : MonoBehaviour
 
     private void Start()
     {
-        GameplayEvents.Instance.OnAddingGroundItem += OnAddingGroundItem;
+        GameplayEvents.Instance.OnAddingGroundItem += FocusOnSelectedItem;
         GameplayEvents.Instance.OnCancelAction += OnCancelAction;
+        GameplayEvents.Instance.OnEditingItem += FocusOnSelectedItem;
     }
 
-    private void OnAddingGroundItem(Transform item)
+    private void FocusOnSelectedItem(Transform item)
     {
         _itemPlacementCam.gameObject.SetActive(true);
         _itemPlacementCam.Follow = item;
