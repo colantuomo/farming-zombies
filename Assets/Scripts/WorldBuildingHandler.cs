@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Utils;
+using static UnityEditor.Progress;
 
 public class WorldBuildingHandler : MonoBehaviour
 {
@@ -17,32 +18,50 @@ public class WorldBuildingHandler : MonoBehaviour
         GameplayEvents.Instance.OnChooseAnItemShop += OnChooseAnItemShop;
         GameplayEvents.Instance.OnEditingItem += OnEditingItem; ;
         GameplayEvents.Instance.OnRotateItem += OnRotateItem;
-        GameplayEvents.Instance.OnCancelAction += OnCancelAction; ;
+        GameplayEvents.Instance.OnCancelAction += OnCancelAction;
+        GameplayEvents.Instance.OnDelete += OnDelete;
+    }
+
+    private void OnDelete()
+    {
+        if (IsEditingAndHaveAnItemSelected())
+        {
+            Destroy(_currentSelectedItem.gameObject);
+            GameplayEvents.Instance.CancelAction();
+            MakeLastClickedGroundAvailable();
+        }
     }
 
     private void OnEditingItem(Transform item)
     {
+        GameState.Instance.SetEditingState();
         _currentSelectedItem = item;
     }
 
     private void OnCancelAction()
     {
-        _lastClickedAvailableGround = null;
         _currentSelectedItem = null;
     }
 
     private void OnRotateItem()
     {
+        if (GameState.Instance.IsShopping()) return;
         if (_currentSelectedItem == null) return;
-        //_currentSelectedItem.Rotate(0, 45, 0);
         _currentSelectedItem.RotateAround(_currentSelectedItem.position, Vector3.up, 45);
     }
 
     private void OnChooseAnItemShop(string itemName)
     {
+        GameState.Instance.SetEditingState();
         _lastClickedAvailableGround.transform.gameObject.layer = LayerMask.NameToLayer(MyLayers.GroundWithEditableItem);
         var posToPlace = new Vector3(_lastClickedAvailableGround.position.x, _lastClickedAvailableGround.position.y, (_lastClickedAvailableGround.position.z - 0.25f));
         _currentSelectedItem = Instantiate(buildings_Fence, posToPlace, Quaternion.identity);
+        _currentSelectedItem.gameObject.isStatic = true;
+    }
+
+    private void MakeLastClickedGroundAvailable()
+    {
+        _lastClickedAvailableGround.transform.gameObject.layer = LayerMask.NameToLayer(MyLayers.GroundAvailable);
     }
 
     public void OnRightClick(InputAction.CallbackContext context)
@@ -50,18 +69,24 @@ public class WorldBuildingHandler : MonoBehaviour
         if (context.performed)
         {
             var item = GetMouseClickedObject();
-            if (GlobalLayers.IsGroundWithEditableItem(item.transform.gameObject.layer))
+            print($"Item {item.transform.name}");
+            if (GlobalLayers.IsEditableItem(item.transform.gameObject.layer))
             {
-                //TODO: passar o transform do objeto que está acima do "ground"
-                //_lastClickedAvailableGround = item.transform;
                 GameplayEvents.Instance.EditingItem(item.transform);
+                return;
             }
             if (GlobalLayers.IsGroundAvailable(item.transform.gameObject.layer))
             {
                 _lastClickedAvailableGround = item.transform;
                 GameplayEvents.Instance.AddingGroundItem(item.transform);
+                return;
             }
         }
+    }
+
+    private bool IsEditingAndHaveAnItemSelected()
+    {
+        return GameState.Instance.IsEditing() && _currentSelectedItem != null;
     }
 
     private RaycastHit GetMouseClickedObject()

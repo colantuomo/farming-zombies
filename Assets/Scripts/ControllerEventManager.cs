@@ -9,8 +9,31 @@ public class ControllerEventManager : MonoBehaviour
     {
         if (context.performed)
         {
-            print("cancel?");
             GameplayEvents.Instance.RotateItem();
+        }
+    }
+
+    public void OnCancelAction(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            GameplayEvents.Instance.CancelAction();
+        }
+    }
+
+    public void OnMouseClicked(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            GameplayEvents.Instance.Click();
+        }
+    }
+
+    public void OnDeleteAction(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            GameplayEvents.Instance.Delete();
         }
     }
 

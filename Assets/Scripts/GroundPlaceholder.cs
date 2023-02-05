@@ -28,7 +28,7 @@ public class GroundPlaceholder : MonoBehaviour
 
     private void OnMouseEnter()
     {
-        if (GameState.Instance.IsPlaying())
+        if (GameState.Instance.IsPlaying() || GameState.Instance.IsEditing())
         {
             _meshRenderer.enabled = true;
             FXTween.Kill();
@@ -38,7 +38,7 @@ public class GroundPlaceholder : MonoBehaviour
 
     private void OnMouseExit()
     {
-        if (GameState.Instance.IsPlaying())
+        if (GameState.Instance.IsPlaying() || GameState.Instance.IsEditing())
         {
             FXTween.Kill();
             FXTween = _meshRenderer.transform.DOScale(new Vector3(0, 0, 0), fxSpeed).OnComplete(() =>

@@ -3725,8 +3725,8 @@ MonoBehaviour:
     m_ActionName: Player/Sprint[/Keyboard/leftShift,/XInputControllerWindows/leftTrigger]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1422230129}
-        m_TargetAssemblyTypeName: NavmeshController, Assembly-CSharp
+      - m_Target: {fileID: 2143952787}
+        m_TargetAssemblyTypeName: ControllerEventManager, Assembly-CSharp
         m_MethodName: OnMouseClicked
         m_Mode: 0
         m_Arguments:
@@ -3757,9 +3757,9 @@ MonoBehaviour:
     m_ActionName: Player/RightClick[/Mouse/rightButton]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2093162535}
-        m_TargetAssemblyTypeName: GameplayEvents, Assembly-CSharp
-        m_MethodName: CancelAction
+      - m_Target: {fileID: 2143952787}
+        m_TargetAssemblyTypeName: ControllerEventManager, Assembly-CSharp
+        m_MethodName: OnCancelAction
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3787,6 +3787,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: c2019e2f-a8aa-40d8-b996-940509559f3c
     m_ActionName: Player/Rotate[/Keyboard/r]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2143952787}
+        m_TargetAssemblyTypeName: ControllerEventManager, Assembly-CSharp
+        m_MethodName: OnDeleteAction
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 9aea4407-7104-4b38-a702-d330886409b3
+    m_ActionName: Player/DeleteAction[/Keyboard/d]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player

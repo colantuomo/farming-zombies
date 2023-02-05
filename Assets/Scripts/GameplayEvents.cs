@@ -34,13 +34,10 @@ public class GameplayEvents : MonoBehaviour
     }
 
     public event Action OnCancelAction;
-    public void CancelAction(InputAction.CallbackContext context)
+    public void CancelAction()
     {
-        if (context.performed)
-        {
-            print("cancel?");
-            OnCancelAction?.Invoke();
-        }
+        print("cancel?");
+        OnCancelAction?.Invoke();
     }
 
     public event Action<string> OnChooseAnItemShop;
@@ -54,5 +51,17 @@ public class GameplayEvents : MonoBehaviour
     public void RotateItem()
     {
         OnRotateItem?.Invoke();
+    }
+
+    public event Action OnClick;
+    public void Click()
+    {
+        OnClick?.Invoke();
+    }
+
+    public event Action OnDelete;
+    public void Delete()
+    {
+        OnDelete?.Invoke();
     }
 }

@@ -13,6 +13,7 @@ public class NavmeshController : MonoBehaviour
     private Camera _virtualCam;
     void Start()
     {
+        GameplayEvents.Instance.OnClick += OnClick;
         _navMeshAgent = GetComponent<NavMeshAgent>();
         _anim = GetComponent<Animator>();
     }
@@ -35,15 +36,21 @@ public class NavmeshController : MonoBehaviour
         return hit.point;
     }
 
-    public void OnMouseClicked(InputAction.CallbackContext context)
+    public void OnClick()
     {
-        if (!GameState.Instance.IsPlaying()) return;
-        if (context.performed)
+        print($"Game State {GameState.Instance.Current()}");
+        if (GameState.Instance.IsPlaying())
         {
             _anim.Play("Run");
             print($"Works??");
             var clickPos = GetObjectPosition();
             _navMeshAgent.SetDestination(clickPos);
         }
+        if (GameState.Instance.IsEditing())
+        {
+            GameplayEvents.Instance.CancelAction();
+            return;
+        }
+
     }
 }

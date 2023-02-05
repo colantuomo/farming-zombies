@@ -6,6 +6,7 @@ public enum GameStates
 {
     Playing,
     Shopping,
+    Editing,
     Waiting,
 }
 
@@ -43,6 +44,11 @@ public class GameState : MonoBehaviour
         _currentGameState = GameStates.Playing;
     }
 
+    public void SetEditingState()
+    {
+        _currentGameState = GameStates.Editing;
+    }
+
     public GameStates Current()
     {
         return _currentGameState;
@@ -51,5 +57,20 @@ public class GameState : MonoBehaviour
     public bool IsPlaying()
     {
         return _currentGameState == GameStates.Playing;
+    }
+
+    public bool IsNotPlaying()
+    {
+        return _currentGameState != GameStates.Playing;
+    }
+
+    public bool IsEditing()
+    {
+        return _currentGameState == GameStates.Editing;
+    }
+
+    public bool IsShopping()
+    {
+        return _currentGameState == GameStates.Shopping;
     }
 }
