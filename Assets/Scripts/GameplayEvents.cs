@@ -47,6 +47,13 @@ public class GameplayEvents : MonoBehaviour
         OnChooseAnItemShop?.Invoke(item);
     }
 
+    public event Action<string> OnChooseAnSeedShop;
+    public void ChooseAnSeedShop(string item)
+    {
+        print($"selected an seed? {item}");
+        OnChooseAnSeedShop?.Invoke(item);
+    }
+
     public event Action OnRotateItem;
     public void RotateItem()
     {

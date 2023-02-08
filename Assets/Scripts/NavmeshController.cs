@@ -14,11 +14,16 @@ public class NavmeshController : MonoBehaviour
     void Start()
     {
         GameplayEvents.Instance.OnClick += OnClick;
+        GameplayEvents.Instance.OnCancelAction += OnCancelAction;
         _navMeshAgent = GetComponent<NavMeshAgent>();
         _anim = GetComponent<Animator>();
     }
 
-    // Update is called once per frame
+    private void OnCancelAction()
+    {
+        _navMeshAgent.SetDestination(transform.position);
+    }
+
     void Update()
     {
         if (!_navMeshAgent.hasPath)
