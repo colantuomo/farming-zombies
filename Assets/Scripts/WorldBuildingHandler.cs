@@ -109,15 +109,16 @@ public class WorldBuildingHandler : MonoBehaviour
         if (context.performed)
         {
             var item = GetMouseClickedObject();
-            if (GlobalLayers.IsEditableItem(item.transform.gameObject.layer))
-            {
-                GameplayEvents.Instance.EditingItem(item.transform);
-                return;
-            }
+            print($"item: {LayerMask.LayerToName(item.transform.gameObject.layer)}");
             if (GlobalLayers.IsGroundAvailable(item.transform.gameObject.layer))
             {
                 _lastClickedAvailableGround = item.transform;
                 GameplayEvents.Instance.AddingGroundItem(item.transform);
+                return;
+            }
+            if (GlobalLayers.IsEditableItem(item.transform.gameObject.layer))
+            {
+                GameplayEvents.Instance.EditingItem(item.transform);
                 return;
             }
         }
