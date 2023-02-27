@@ -6,9 +6,13 @@ using DG.Tweening;
 public class GroundPlaceholder : MonoBehaviour
 {
     private MeshRenderer _meshRenderer;
-    private Tween FXTween = null;
+    private Tween _FXTween = null;
     [SerializeField]
-    private float fxSpeed = .2f;
+    private float _fxSpeed = .2f;
+    [SerializeField]
+    private float _searchItemRadius = .2f;
+    [SerializeField]
+    private Transform _searchForItemPoint;
 
     private void Start()
     {
@@ -31,22 +35,34 @@ public class GroundPlaceholder : MonoBehaviour
         if (GameState.Instance.IsPlaying() || GameState.Instance.IsEditing())
         {
             _meshRenderer.enabled = true;
-            FXTween.Kill();
-            FXTween = _meshRenderer.transform.DOScale(new Vector3(0.1f, 0.1f, 0.1f), fxSpeed);
+            _FXTween.Kill();
+            _FXTween = _meshRenderer.transform.DOScale(new Vector3(0.1f, 0.1f, 0.1f), _fxSpeed);
         }
     }
 
     private void OnMouseExit()
     {
-        if (GameState.Instance.IsPlaying() || GameState.Instance.IsEditing())
+        if (GameState.Instance.IsPlaying() || GameState.Instance.IsEditing() || GameState.Instance.IsShopping())
         {
-            FXTween.Kill();
-            FXTween = _meshRenderer.transform.DOScale(new Vector3(0, 0, 0), fxSpeed).OnComplete(() =>
+            _FXTween.Kill();
+            _FXTween = _meshRenderer.transform.DOScale(new Vector3(0, 0, 0), _fxSpeed).OnComplete(() =>
                 {
                     _meshRenderer.enabled = false;
                     float size = 0.1f;
                     _meshRenderer.transform.localScale = new Vector3(size, size, size);
                 });
         }
+    }
+
+    public bool HasAnItem()
+    {
+        Collider[] colliders = Physics.OverlapSphere(_searchForItemPoint.position, _searchItemRadius);
+        return colliders.Length > 0;
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(_searchForItemPoint.position, _searchItemRadius);
     }
 }

@@ -14,11 +14,14 @@ public class SeedProgression : MonoBehaviour
     [Header("Seeds Configurations")]
     [SerializeField]
     private SeedState _seedState = SeedState.New;
+    [SerializeField]
+    private GameObject _monster;
 
     [SerializeField]
     private float _defaultProgressionTime = 20f;
     private float _timeRemaining;
     private bool _timerIsRunning = true;
+    private Transform _currentSeed;
 
     private void Start()
     {
@@ -42,7 +45,7 @@ public class SeedProgression : MonoBehaviour
             }
             //float minutes = Mathf.FloorToInt(_timeRemaining / 60);
             float seconds = Mathf.FloorToInt(_timeRemaining % 60);
-            print($"Time remaining: {seconds}");
+            //print($"Time remaining: {seconds}");
         }
     }
 
@@ -60,18 +63,24 @@ public class SeedProgression : MonoBehaviour
                 EvolveSeed(2);
                 break;
             case SeedState.Full:
-                print("Summon Monster!");
+                SummonMonster();
                 _timerIsRunning = false;
                 break;
         }
     }
 
+    private void SummonMonster()
+    {
+        Instantiate(_monster, _currentSeed.position, Quaternion.identity);
+        Destroy(_currentSeed.gameObject);
+    }
+
     void EvolveSeed(int idx)
     {
         var olderSeed = transform.GetChild(idx - 1).transform;
-        var seedNew = transform.GetChild(idx).transform;
+        _currentSeed = transform.GetChild(idx).transform;
 
         olderSeed.gameObject.SetActive(false);
-        seedNew.gameObject.SetActive(true);
+        _currentSeed.gameObject.SetActive(true);
     }
 }

@@ -50,8 +50,15 @@ public class GameplayEvents : MonoBehaviour
     public event Action<string> OnChooseAnSeedShop;
     public void ChooseAnSeedShop(string item)
     {
-        print($"selected an seed? {item}");
+        print($"selected a seed? {item}");
         OnChooseAnSeedShop?.Invoke(item);
+    }
+
+    public event Action<string> OnChooseAnGunShop;
+    public void ChooseAnGunShop(string item)
+    {
+        print($"selected a gun? {item}");
+        OnChooseAnGunShop?.Invoke(item);
     }
 
     public event Action OnRotateItem;
@@ -70,5 +77,11 @@ public class GameplayEvents : MonoBehaviour
     public void Delete()
     {
         OnDelete?.Invoke();
+    }
+
+    public event Action<Transform> OnEnemyDied;
+    public void EnemyGotKilled(Transform enemy)
+    {
+        OnEnemyDied?.Invoke(enemy);
     }
 }

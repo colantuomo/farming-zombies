@@ -49,6 +49,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _seedState: 0
+  _monster: {fileID: 2463526256750564095, guid: cd39be3c66d08e34f8c9f9595f66a4e2,
+    type: 3}
   _defaultProgressionTime: 10
 --- !u!114 &-4313167083845852119
 MonoBehaviour:

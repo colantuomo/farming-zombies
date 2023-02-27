@@ -31,4 +31,12 @@ public class ItemsShopManager : MonoBehaviour
         _visualManager.HideItemShop();
     }
 
+    public void BuyGunShop(string itemName)
+    {
+        //TODO: refact these events name and maybe use a single evente for item shop
+        print($"BuyGunShop? {itemName}");
+        GameplayEvents.Instance.ChooseAnGunShop(itemName);
+        _visualManager.HideItemShop();
+    }
+
 }

@@ -30,6 +30,14 @@ public class WorldBuildingHandler : MonoBehaviour
         GameplayEvents.Instance.OnCancelAction += OnCancelAction;
         GameplayEvents.Instance.OnDelete += OnDelete;
         GameplayEvents.Instance.OnChooseAnSeedShop += OnChooseAnSeedShop;
+        GameplayEvents.Instance.OnChooseAnGunShop += OnChooseAnGunShop;
+    }
+
+    private void OnChooseAnGunShop(string itemName)
+    {
+        print($"Gun Selected: {itemName}");
+        Transform itemPrefab = GetGunPrefabByName(itemName);
+        InstantiateShopItem(itemPrefab);
     }
 
     private void OnDelete()
@@ -88,6 +96,11 @@ public class WorldBuildingHandler : MonoBehaviour
         return Resources.Load<Transform>("Prefabs/Seeds/" + itemName);
     }
 
+    private Transform GetGunPrefabByName(string itemName)
+    {
+        return Resources.Load<Transform>("Prefabs/Guns/" + itemName);
+    }
+
     private void InstantiateShopItem(Transform item)
     {
         print($"InstantiateShopItem: {item.name}");
@@ -109,17 +122,21 @@ public class WorldBuildingHandler : MonoBehaviour
         if (context.performed)
         {
             var item = GetMouseClickedObject();
-            print($"item: {LayerMask.LayerToName(item.transform.gameObject.layer)}");
-            if (GlobalLayers.IsGroundAvailable(item.transform.gameObject.layer))
+            item.transform.TryGetComponent(out GroundPlaceholder groundPlaceholder);
+            var groundHasItem = false;
+            if (groundPlaceholder != null)
+            {
+                groundHasItem = groundPlaceholder.HasAnItem();
+            }
+            bool isAValidGroundAndDontHaveAnItem = !groundHasItem && groundPlaceholder != null;
+            if (isAValidGroundAndDontHaveAnItem)
             {
                 _lastClickedAvailableGround = item.transform;
                 GameplayEvents.Instance.AddingGroundItem(item.transform);
-                return;
             }
             if (GlobalLayers.IsEditableItem(item.transform.gameObject.layer))
             {
                 GameplayEvents.Instance.EditingItem(item.transform);
-                return;
             }
         }
     }
