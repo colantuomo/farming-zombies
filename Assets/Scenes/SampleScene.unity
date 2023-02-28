@@ -5609,11 +5609,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Zombie Lv1
       objectReference: {fileID: 0}
-    - target: {fileID: 2463526256750564095, guid: cd39be3c66d08e34f8c9f9595f66a4e2,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 2989234259279431749, guid: cd39be3c66d08e34f8c9f9595f66a4e2,
         type: 3}
       propertyPath: m_RootOrder

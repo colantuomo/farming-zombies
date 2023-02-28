@@ -8,7 +8,7 @@ public class EnemyBehavior : MonoBehaviour
     [SerializeField]
     float _totalLife = 5f;
     [SerializeField]
-    float _timeToDie = 3f;
+    float _timeToDie = 10f;
     private Animator _anim;
     private CapsuleCollider _collider;
     private SkinnedMeshRenderer _skinnedMesh;
@@ -54,7 +54,7 @@ public class EnemyBehavior : MonoBehaviour
         // trigger some particle
         _collider.enabled = false;
         _anim.SetTrigger("Die");
-        //Destroy(gameObject, _timeToDie);
+        Destroy(gameObject, _timeToDie);
     }
 
     public bool IsDead()

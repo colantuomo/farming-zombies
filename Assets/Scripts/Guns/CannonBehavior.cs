@@ -35,7 +35,7 @@ public class CannonBehavior : MonoBehaviour
             var enemy = colliders[0];
             //print($"Enemy founded!: {enemy.transform.name}");
             print($"Time remaining to shoot: {_timeRemaining}");
-            transform.LookAt(enemy.transform, Vector3.up);
+            transform.DOLookAt(enemy.transform.position, .5f);
             if (_timeRemaining >= 0)
             {
                 _timeRemaining -= Time.deltaTime;

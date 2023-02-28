@@ -26,7 +26,7 @@ public class ZombieBehavior : MonoBehaviour
     {
         if (_enemyBehavior.IsDead())
         {
-            _navMeshAgent.isStopped = true;
+            _navMeshAgent.enabled = false;
             return;
         }
 
