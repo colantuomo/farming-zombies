@@ -51,6 +51,8 @@ MonoBehaviour:
   _seedState: 0
   _monster: {fileID: 2463526256750564095, guid: cd39be3c66d08e34f8c9f9595f66a4e2,
     type: 3}
+  _monsterPhaseFX: {fileID: 2433771434059983006, guid: 76c12893fa3482c41be1d2912d1513e7,
+    type: 3}
   _defaultProgressionTime: 10
 --- !u!114 &-4313167083845852119
 MonoBehaviour:

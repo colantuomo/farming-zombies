@@ -6,6 +6,9 @@ using DG.Tweening;
 public class CannonBehavior : MonoBehaviour
 {
     [SerializeField]
+    private GameObject _shootFX;
+    private Transform _cannonAim;
+    [SerializeField]
     private Transform _cannon;
     [SerializeField]
     private Transform _pivotToRotate;
@@ -19,6 +22,7 @@ public class CannonBehavior : MonoBehaviour
     private Tween _shootAnimationTween;
     void Start()
     {
+        _cannonAim = transform.Find("Aim");
         _timeRemaining = 0f;
     }
 
@@ -51,6 +55,7 @@ public class CannonBehavior : MonoBehaviour
     private void Shoot(Transform target)
     {
         print("Has shoot!");
+        Instantiate(_shootFX, _cannonAim.position, Quaternion.identity);
         target.TryGetComponent(out EnemyBehavior enemyBehavior);
         if (enemyBehavior != null)
         {

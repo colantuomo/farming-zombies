@@ -16,6 +16,8 @@ public class SeedProgression : MonoBehaviour
     private SeedState _seedState = SeedState.New;
     [SerializeField]
     private GameObject _monster;
+    [SerializeField]
+    private GameObject _monsterPhaseFX;
 
     [SerializeField]
     private float _defaultProgressionTime = 20f;
@@ -71,6 +73,7 @@ public class SeedProgression : MonoBehaviour
 
     private void SummonMonster()
     {
+        Instantiate(_monsterPhaseFX, transform.position, Quaternion.identity);
         Instantiate(_monster, _currentSeed.position, Quaternion.identity);
         Destroy(_currentSeed.gameObject);
     }
