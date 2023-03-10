@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
-public class CannonBehavior : MonoBehaviour
+public class CannonBehavior : MonoBehaviour, ICombatBehavior
 {
     [SerializeField]
     private GameObject _shootFX;
@@ -18,17 +18,33 @@ public class CannonBehavior : MonoBehaviour
     private float _damage = 2f;
     [SerializeField]
     private float _shootDelay = 2f;
+    [SerializeField]
+    private float _totalLife = 5f;
     private float _timeRemaining;
-    private Tween _shootAnimationTween;
+
     void Start()
     {
         _cannonAim = transform.Find("Aim");
         _timeRemaining = 0f;
     }
 
-    void Update()
+    public void GotHit(float damage)
     {
+        _totalLife -= damage;
+    }
 
+    private void Update()
+    {
+        if (_totalLife <= 0)
+        {
+            Die();
+        }
+    }
+
+    private void Die()
+    {
+        print("Cannon Died");
+        Destroy(gameObject);
     }
 
     private void FixedUpdate()
@@ -38,7 +54,7 @@ public class CannonBehavior : MonoBehaviour
         {
             var enemy = colliders[0];
             //print($"Enemy founded!: {enemy.transform.name}");
-            print($"Time remaining to shoot: {_timeRemaining}");
+            //print($"Time remaining to shoot: {_timeRemaining}");
             transform.DOLookAt(enemy.transform.position, .5f);
             if (_timeRemaining >= 0)
             {
@@ -61,11 +77,10 @@ public class CannonBehavior : MonoBehaviour
         {
             enemyBehavior.TakeDamage(_damage);
         }
-        _shootAnimationTween.Kill();
-        _shootAnimationTween = _cannon.DOLocalMoveZ(-0.07f, .1f).OnComplete(() =>
+        _cannon.DOLocalMoveZ(-0.07f, .1f).OnComplete(() =>
         {
             _cannon.DOLocalMoveZ(0f, 1f).SetEase(Ease.OutBounce);
-        });
+        }).SetAutoKill(true);
     }
 
     private void OnDrawGizmosSelected()

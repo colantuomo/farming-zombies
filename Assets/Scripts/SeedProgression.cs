@@ -73,8 +73,9 @@ public class SeedProgression : MonoBehaviour
 
     private void SummonMonster()
     {
+        var positionToSummon = _currentSeed.position;
         Instantiate(_monsterPhaseFX, transform.position, Quaternion.identity);
-        Instantiate(_monster, _currentSeed.position, Quaternion.identity);
+        Instantiate(_monster, positionToSummon, Quaternion.identity);
         Destroy(_currentSeed.gameObject);
     }
 

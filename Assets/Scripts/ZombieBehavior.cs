@@ -11,8 +11,11 @@ public class ZombieBehavior : MonoBehaviour
     private float _searchRadius = 1f;
     [SerializeField]
     private float _attackDelay = 1.5f;
+    [SerializeField]
+    private float _attackStrength = 1.5f;
     private IEnumerator _attackCoroutine;
     private EnemyBehavior _enemyBehavior;
+    private Transform _lastTargetFound;
 
     void Start()
     {
@@ -38,10 +41,12 @@ public class ZombieBehavior : MonoBehaviour
             _navMeshAgent.SetDestination(target.transform.position);
             var isCloseToTarget = _navMeshAgent.remainingDistance != 0 && _navMeshAgent.remainingDistance <= 1f;
             //print($"_navMeshAgent.remainingDistance: {_navMeshAgent.remainingDistance} - isCloseToTarget: {isCloseToTarget}");
+            print($"target: {target.name}");
             if (isCloseToTarget)
             {
                 _navMeshAgent.isStopped = true;
                 _anim.SetBool("isWalking", false);
+                _lastTargetFound = target.transform;
                 if (_attackCoroutine == null)
                 {
                     _attackCoroutine = Attack();
@@ -51,9 +56,7 @@ public class ZombieBehavior : MonoBehaviour
             }
             if (_attackCoroutine != null)
             {
-                _anim.ResetTrigger("Attack");
-                StopCoroutine(_attackCoroutine);
-                _attackCoroutine = null;
+                StopAttack();
             }
             _navMeshAgent.isStopped = false;
             _anim.SetBool("isWalking", true);
@@ -65,12 +68,28 @@ public class ZombieBehavior : MonoBehaviour
         }
     }
 
+    private void StopAttack()
+    {
+        _anim.ResetTrigger("Attack");
+        StopCoroutine(_attackCoroutine);
+        _attackCoroutine = null;
+    }
+
     IEnumerator Attack()
     {
         for (; ; )
         {
-            print("Attack?");
             _anim.SetTrigger("Attack");
+            if (_lastTargetFound != null)
+            {
+                _lastTargetFound.TryGetComponent(out ICombatBehavior combatBehavior);
+                combatBehavior?.GotHit(_attackStrength);
+            }
+            else
+            {
+                _lastTargetFound = null;
+                StopAttack();
+            }
             yield return new WaitForSeconds(_attackDelay);
         }
     }

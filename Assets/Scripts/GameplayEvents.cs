@@ -84,4 +84,10 @@ public class GameplayEvents : MonoBehaviour
     {
         OnEnemyDied?.Invoke(enemy);
     }
+
+    public event Action OnMonsterHasBeenSummon;
+    public void MonsterHasBeenSummon()
+    {
+        OnMonsterHasBeenSummon?.Invoke();
+    }
 }

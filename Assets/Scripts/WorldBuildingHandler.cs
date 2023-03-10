@@ -31,6 +31,13 @@ public class WorldBuildingHandler : MonoBehaviour
         GameplayEvents.Instance.OnDelete += OnDelete;
         GameplayEvents.Instance.OnChooseAnSeedShop += OnChooseAnSeedShop;
         GameplayEvents.Instance.OnChooseAnGunShop += OnChooseAnGunShop;
+        GameplayEvents.Instance.OnMonsterHasBeenSummon += OnMonsterHasBeenSummon;
+    }
+
+    private void OnMonsterHasBeenSummon()
+    {
+        print("Monster was summon");
+        GameGround.BuildNavMesh();
     }
 
     private void OnChooseAnGunShop(string itemName)
